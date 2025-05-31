@@ -19,5 +19,15 @@
 </head>
 <body>
   <iframe src="https://script.google.com/macros/s/AKfycbwtGYnoHLO43Jay_WhwWMo85KruBb5UYoaF-5zBjingpu-mu9RiizkiCSrtrsUAGIR7xQ/exec"></iframe>
+  <script>
+    window.addEventListener('message', function(event) {
+      // Verifique a origem da mensagem para segurança:
+      // if (event.origin !== 'https://dominio-do-iframe.com') return;
+
+      if (event.data === 'reloadPage') {
+        location.reload();
+      }
+    });
+  </script>
 </body>
 </html>
