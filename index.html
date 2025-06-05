@@ -96,7 +96,7 @@
 
     window.addEventListener("message", function(event) {
       if (event.origin !== "https://script.google.com" &&
-          !event.origin.includes(".googleusercontent.com")) {
+          !event.origin.includes("https://n-nhob3yjks5se63kfvztsw2roqkybtmjz6tgtskq-0lu-script.googleusercontent.com")) {
         console.warn("Mensagem rejeitada por origem não confiável:", event.origin);
         return;
       }
