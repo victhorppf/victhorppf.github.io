@@ -21,13 +21,22 @@
   <iframe src="https://script.google.com/macros/s/AKfycbwtGYnoHLO43Jay_WhwWMo85KruBb5UYoaF-5zBjingpu-mu9RiizkiCSrtrsUAGIR7xQ/exec"></iframe>
   <script>
     window.addEventListener('message', function(event) {
-      console.log("Mensagem aceita da origem:", event.origin);
+      // DOMÍNIO permitido (ajuste se necessário)
+      const allowedOrigin = 'https://n-nhob3yjks5se63kfvztsw2roqkybtmjz6tgtskq-0lu-script.googleusercontent.com';
 
-      if (event.data === 'reloadPage') {
-        console.log("Comando de recarregar página recebido.");
-        location.reload();
+      if (event.origin === allowedOrigin) {
+        console.log('✅ Mensagem recebida de origem confiável:', event.origin);
+        
+        if (event.data === 'reloadPage') {
+          location.reload();
+        } else {
+          console.log('📨 Mensagem recebida, mas não reconhecida:', event.data);
+        }
+      } else {
+        console.warn('❌ Bloqueando postMessage de origem não confiável:', event.origin);
       }
     });
   </script>
+
 </body>
 </html>
