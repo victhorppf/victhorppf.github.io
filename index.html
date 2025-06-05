@@ -21,13 +21,6 @@
   <iframe src="https://script.google.com/macros/s/AKfycbwtGYnoHLO43Jay_WhwWMo85KruBb5UYoaF-5zBjingpu-mu9RiizkiCSrtrsUAGIR7xQ/exec"></iframe>
   <script>
     window.addEventListener('message', function(event) {
-      const origemEsperada = 'https://script.google.com';
-
-      if (event.origin !== origemEsperada) {
-        console.warn("Mensagem rejeitada. Origem inválida:", event.origin);
-        return;
-      }
-
       console.log("Mensagem aceita da origem:", event.origin);
 
       if (event.data === 'reloadPage') {
