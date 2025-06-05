@@ -12,6 +12,7 @@
       font-family: Arial, sans-serif;
     }
     #header {
+      position: fixed;
       background-color: #222;
       color: white;
       padding: 10px 20px;
@@ -38,7 +39,6 @@
 </head>
 <body>
   <div id="header">
-    <div id="operadorNome">Carregando operador...</div>
     <button id="btnSair">Sair</button>
   </div>
   
@@ -46,72 +46,8 @@
   
   <script>
      window.onload = function () {
-      console.log("window.onload executado PAI.");
+      console.log("window.onload executado (polarLOG).");
       console.log("window.PAI origin:", window.origin);
-     }
-    // Função para atualizar o nome do operador no cabeçalho
-    function atualizarNomeOperador() {
-      const usuarioStr = sessionStorage.getItem('usuario_logado');
-      const operadorDiv = document.getElementById('operadorNome');
-
-      if (usuarioStr) {
-        try {
-          const usuario = JSON.parse(usuarioStr);
-          operadorDiv.textContent = `Operador: ${usuario.operador || 'Desconhecido'}`;
-        } catch (e) {
-          operadorDiv.textContent = 'Erro ao ler operador';
-          console.error(e);
-        }
-      } else {
-        operadorDiv.textContent = 'Nenhum operador logado';
-      }
-    }
-
-    // Atualiza nome ao carregar a página
-    atualizarNomeOperador();
-
-    // Botão sair que recarrega a página
-    document.getElementById('btnSair').addEventListener('click', () => {
-      sessionStorage.removeItem('usuario_logado'); // opcional, limpa dados da sessão
-      location.reload();
-    });
-
-    function atualizarNomeOperador() {
-      const usuarioStr = sessionStorage.getItem('usuario_logado');
-      const operadorDiv = document.getElementById('operadorNome');
-
-      if (usuarioStr) {
-        try {
-          const usuario = JSON.parse(usuarioStr);
-          operadorDiv.textContent = `Operador: ${usuario.operador || 'Desconhecido'}`;
-        } catch (e) {
-          operadorDiv.textContent = 'Erro ao ler operador';
-          console.error(e);
-        }
-      } else {
-        operadorDiv.textContent = 'Nenhum operador logado';
-      }
-    }
-
-
-    window.addEventListener("message", function(event) {
-      if (event.origin !== "https://script.google.com" &&
-          !event.origin.includes("https://n-nhob3yjks5se63kfvztsw2roqkybtmjz6tgtskq-0lu-script.googleusercontent.com")) {
-        console.warn("Mensagem rejeitada por origem não confiável:", event.origin);
-        return;
-      }
-
-      if (event.data.tipo === "dadosUsuario") {
-        console.log("Usuário logado recebido do iframe:", event.data.payload);
-
-        // Salva no sessionStorage da página pai (não do iframe)
-        sessionStorage.setItem('usuario_logado', JSON.stringify(event.data.payload));
-
-        // Atualiza o cabeçalho
-        atualizarNomeOperador();
-      }
-    });
-
   </script>
 </body>
 </html>
