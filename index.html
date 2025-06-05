@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>PolarLog</title>
   <style>
     html, body {
@@ -9,31 +9,85 @@
       padding: 0;
       height: 100%;
       overflow: hidden;
+      font-family: Arial, sans-serif;
+    }
+    #header {
+      background-color: #222;
+      color: white;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    #header button {
+      background-color: #f44336;
+      border: none;
+      color: white;
+      padding: 6px 12px;
+      cursor: pointer;
+      border-radius: 4px;
+      font-size: 14px;
     }
     iframe {
       width: 100%;
-      height: 100%;
+      height: calc(100% - 50px); /* altura da janela menos header */
       border: none;
+      display: block;
     }
   </style>
 </head>
 <body>
+  <div id="header">
+    <div id="operadorNome">Carregando operador...</div>
+    <button id="btnSair">Sair</button>
+  </div>
+  
   <iframe src="https://script.google.com/macros/s/AKfycbwtGYnoHLO43Jay_WhwWMo85KruBb5UYoaF-5zBjingpu-mu9RiizkiCSrtrsUAGIR7xQ/exec"></iframe>
+  
   <script>
-    window.addEventListener('message', function(event) {
-      console.log("Mensagem recebida de:", event.origin);
+    // Função para atualizar o nome do operador no cabeçalho
+    function atualizarNomeOperador() {
+      const usuarioStr = sessionStorage.getItem('usuario_logado');
+      const operadorDiv = document.getElementById('operadorNome');
 
-      if (event.origin !== 'https://n-nhob3yjks5se63kfvztsw2roqkybtmjz6tgtskq-0lu-script.googleusercontent.com') {
-        console.warn('Origem não confiável:', event.origin);
+      if (usuarioStr) {
+        try {
+          const usuario = JSON.parse(usuarioStr);
+          operadorDiv.textContent = `Operador: ${usuario.operador || 'Desconhecido'}`;
+        } catch (e) {
+          operadorDiv.textContent = 'Erro ao ler operador';
+          console.error(e);
+        }
+      } else {
+        operadorDiv.textContent = 'Nenhum operador logado';
+      }
+    }
+
+    // Atualiza nome ao carregar a página
+    atualizarNomeOperador();
+
+    // Botão sair que recarrega a página
+    document.getElementById('btnSair').addEventListener('click', () => {
+      sessionStorage.removeItem('usuario_logado'); // opcional, limpa dados da sessão
+      location.reload();
+    });
+
+    // Seu listener original para mensagens do iframe continua aqui
+    window.addEventListener("message", function(event) {
+      if (event.origin !== "https://script.google.com" &&
+          !event.origin.includes(".googleusercontent.com")) {
+        console.warn("Mensagem rejeitada por origem não confiável:", event.origin);
         return;
       }
 
-      if (event.data === 'reloadPage') {
-        console.log("Mensagem aceita, recarregando a página.");
-        location.reload();
+      if (event.data.tipo === "dadosUsuario") {
+        console.log("Usuário logado recebido do iframe:", event.data.payload);
+        // Atualize o sessionStorage com os dados novos, se quiser:
+        sessionStorage.setItem('usuario_logado', JSON.stringify(event.data.payload));
+        // Atualiza o nome no cabeçalho
+        atualizarNomeOperador();
       }
     });
   </script>
-
 </body>
 </html>
