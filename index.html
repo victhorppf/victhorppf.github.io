@@ -45,6 +45,10 @@
   <iframe src="https://script.google.com/macros/s/AKfycbwtGYnoHLO43Jay_WhwWMo85KruBb5UYoaF-5zBjingpu-mu9RiizkiCSrtrsUAGIR7xQ/exec"></iframe>
   
   <script>
+     window.onload = function () {
+      console.log("window.onload executado PAI.");
+      console.log("window.PAI origin:", window.origin);
+     }
     // Função para atualizar o nome do operador no cabeçalho
     function atualizarNomeOperador() {
       const usuarioStr = sessionStorage.getItem('usuario_logado');
