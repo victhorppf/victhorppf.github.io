@@ -72,7 +72,24 @@
       location.reload();
     });
 
-    // Seu listener original para mensagens do iframe continua aqui
+    function atualizarNomeOperador() {
+      const usuarioStr = sessionStorage.getItem('usuario_logado');
+      const operadorDiv = document.getElementById('operadorNome');
+
+      if (usuarioStr) {
+        try {
+          const usuario = JSON.parse(usuarioStr);
+          operadorDiv.textContent = `Operador: ${usuario.operador || 'Desconhecido'}`;
+        } catch (e) {
+          operadorDiv.textContent = 'Erro ao ler operador';
+          console.error(e);
+        }
+      } else {
+        operadorDiv.textContent = 'Nenhum operador logado';
+      }
+    }
+
+
     window.addEventListener("message", function(event) {
       if (event.origin !== "https://script.google.com" &&
           !event.origin.includes(".googleusercontent.com")) {
@@ -82,12 +99,15 @@
 
       if (event.data.tipo === "dadosUsuario") {
         console.log("Usuário logado recebido do iframe:", event.data.payload);
-        // Atualize o sessionStorage com os dados novos, se quiser:
+
+        // Salva no sessionStorage da página pai (não do iframe)
         sessionStorage.setItem('usuario_logado', JSON.stringify(event.data.payload));
-        // Atualiza o nome no cabeçalho
+
+        // Atualiza o cabeçalho
         atualizarNomeOperador();
       }
     });
+
   </script>
 </body>
 </html>
