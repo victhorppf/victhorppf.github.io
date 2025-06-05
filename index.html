@@ -5,22 +5,31 @@
   <title>PolarLog</title>
   <style>
     html, body {
-      padding-top: 50px; /* ajuste conforme a altura do seu header */
       margin: 0;
       padding: 0;
       height: 100%;
       overflow: hidden;
       font-family: Arial, sans-serif;
     }
+
+    /* Header fixo no topo, largura total */
     #header {
       position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%; /* Ocupa toda largura da página */
+      height: 50px;
       background-color: #222;
       color: white;
       padding: 10px 20px;
       display: flex;
-      justify-content: space-between;
+      justify-content: flex-end; /* botão no canto direito */
       align-items: center;
+      box-sizing: border-box;
+      z-index: 1000;
     }
+
+    /* Estilo do botão */
     #header button {
       background-color: #f44336;
       border: none;
@@ -30,11 +39,13 @@
       border-radius: 4px;
       font-size: 14px;
     }
+
     iframe {
       width: 100%;
       height: calc(100% - 50px); /* altura da janela menos header */
       border: none;
       display: block;
+      margin-top: 50px; /* deixa espaço para o header fixo */
     }
   </style>
 </head>
@@ -42,13 +53,19 @@
   <div id="header">
     <button id="btnSair">Sair</button>
   </div>
-  
+
   <iframe src="https://script.google.com/macros/s/AKfycbwtGYnoHLO43Jay_WhwWMo85KruBb5UYoaF-5zBjingpu-mu9RiizkiCSrtrsUAGIR7xQ/exec"></iframe>
-  
+
   <script>
-     window.onload = function () {
+    // Quando clicar no botão, recarrega a página
+    document.getElementById('btnSair').addEventListener('click', function() {
+      location.reload();
+    });
+
+    window.onload = function () {
       console.log("window.onload executado (polarLOG).");
       console.log("window.PAI origin:", window.origin);
+    }
   </script>
 </body>
 </html>
